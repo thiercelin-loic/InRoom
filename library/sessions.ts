@@ -1,10 +1,10 @@
 const second = 1000
 const minute = second * 60
 
-let list = [{ user: '', time: 0, }]
+let users = [{ user: '', time: 0, }]
 
 function get() {
-    return list
+    return users
 }
 
 function short(current: number) {
@@ -22,18 +22,18 @@ function current() {
 }
 
 function clean() {
-    const update = list.filter((sessions) =>
+    const update = users.filter((sessions) =>
         sessions.user
             ? sessions
             : null
     )
 
-    console.log('list cleaned')
-    list = update
+    console.log('cleaned')
+    users = update
 }
 
 function overtime() {
-    const update = [...list]
+    const update = [...users]
     const fifteen = minute * 15
     const delay = current() - fifteen
 
@@ -44,11 +44,11 @@ function overtime() {
         }
     })
 
-    list = update
+    users = update
 }
 
-function stop(user: string) {
-    const update = [...list]
+function drop(user: string) {
+    const update = [...users]
 
     update.filter((sessions) => {
         if (sessions.user == user) {
@@ -57,10 +57,10 @@ function stop(user: string) {
         }
     })
 
-    list = update
+    users = update
 }
 
-function start(user: string) {
+function set(user: string) {
     const interval = minute / 8
     const time = current()
     const push = {
@@ -70,13 +70,13 @@ function start(user: string) {
 
     console.log(user, 'connected')
 
-    list.map((sessions) =>
+    users.map((sessions) =>
         sessions.user == user
-            ? stop(user)
+            ? drop(user)
             : null
     )
 
-    list.push(push)
+    users.push(push)
 
     setInterval(() => {
         overtime()
@@ -84,6 +84,6 @@ function start(user: string) {
     }, interval)
 }
 
-const sessions = { get, start, stop }
+const sessions = { get, set, drop }
 
 export default sessions
