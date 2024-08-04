@@ -1,7 +1,13 @@
 const second = 1000
 const minute = second * 60
 
-let users = [{ user: '', time: 0, }]
+let users = [{ 
+    user: '', 
+    time: 0, 
+    score: 0,
+    location: '', 
+    items: [''] 
+}]
 
 function get() {
     return users
@@ -60,12 +66,20 @@ function drop(user: string) {
     users = update
 }
 
-function set(user: string) {
+function set(
+    user: string, 
+    score: number, 
+    location: string, 
+    items: string[]
+) {
     const interval = minute / 8
     const time = current()
     const push = {
         user,
         time,
+        score,
+        location,
+        items
     }
 
     console.log(user, 'connected')
@@ -81,6 +95,7 @@ function set(user: string) {
     setInterval(() => {
         overtime()
         clean()
+        console.log(users)
     }, interval)
 }
 

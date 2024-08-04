@@ -1,2 +1,3 @@
-import sessions from './library/sessions'
+import sessions from 'inroom'
+
 export default sessions
