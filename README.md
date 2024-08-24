@@ -11,50 +11,41 @@
 
 <h2>Getting started</h2>
 
-<p>This library must be used in <b>.ts</b> format. Import the module of you want, and use theses <b>properties</b> and/or <b>methods</b>. (see <a src=''https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object>objects in JavaScripts</a>)</p>
+<p>This library must be used in <b>.ts</b> format. Import the module of you want, and use theses <b>properties</b> and/or <b>methods</b>. (see <a src='https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object'>objects in JavaScripts</a>)</p>
 <h3>Sessions</h3>
 <img 
     src="https://thiercelin-loic.fr/inRoom/importsessions.png" width='250'
 >
 <hr/>
 <h4>Properties :</h4>
-<p>Sessions module have an array with users information, this array contains objects with five properties. Theses only accesible by the <i>'get'</i> method (see <b>methods</b> bellow).
+<p>Sessions module have an array with users information, this array contains objects with five properties. Theses only accesible or assigned by the <i>'get'</i> and <i>'set'</i> method (see <b>methods</b> bellow).
 </p>
 <ul>
 <li>
-<p>
-The first property is named 'user', this value must take a user name of type <i>'string'</i>.
+<p><b>Name</b> <i>string</i> : Takes a name of type <i>string</i>. This name must represented how the user should be called.</p>
 </li>
-<li>
-<p>
-The secondary property is named 'time', this value must take milliseconds represented by the user's connection time. This value is of type <i>'number'</i>.
-</p>
+<li><b>Location</b> <i>string</i> : This value of type <i>string</i>, represent the location of users. For exemple web adress '/root/shop', or reel and fake location like 'London, United Kingdom' or 'Pokemon Center'. It's helpful, if you want to keep the feeds of your users locations, for statistical plan or to find somebody in your app.
+</li>
+<li><b>Items</b> <i>string[]</i> : Take only in parameters, the type of <i>an array of string</i>. That must represented what users have. For exemple, if your users needs a cart in your web shop. Or, if your app work with tokens system.
 </li>
 
 <li>
 <p>
-The third property is named 'score', this value must take the score of an user. In case of competive relation with others users, like games or/and comparisons. This value is of type <i>'number'</i>.
+<b>Time</b> <i>number</i> : Must take milliseconds represented by the user's connection time.
 </p>
 </li>
-
 <li>
 <p>
-The fourth property is named 'location', this value must take the location where's the user, like last requested adress or/and real location. This value is of type <i>'string'</i>.
-</li>
+<b>Score</b>, <b>Rated</b> and <b>Rank</b> <i>number</i> : In case of competive relation with others users, like games or/and comparisons. Scores can be of any lenght of you want, rated values evaluate scores by hundred, and influence his position in the rank. Rank position is represented by numbers, to be as simple and adapted as possible to the architecture of your project.
 </p>
-
-<li>
-<p>
-Last property is named 'items', this value must take one or several items like shopping cart or/and object represented in your application. This value is of type <i>'string'</i>.
 </li>
-</p>
 </ul>
 
 <h4>Methods :</h4>
 <ul>
 <li>
 <img 
-    src="https://thiercelin-loic.fr/inRoom/sessionsget.png" width='120'
+    src="https://thiercelin-loic.fr/inRoom/sessionsget.png" width='130'
 >
 <p>Return an array with users informations. (see <b>properties</b>, on the top-level)</p>
 
@@ -62,22 +53,17 @@ Last property is named 'items', this value must take one or several items like s
 
 <li>
 <img 
-    src="https://thiercelin-loic.fr/inRoom/sessionsset.png" width='170'
+    src="https://thiercelin-loic.fr/inRoom/sessionsset.png" width='425'
 >
-<p>Takes a string username as a parameter.
-When called, this function pushes the username into a list of sessions with the current time.
-If this function is not called with the same username within fifteen minutes, those sessions automatically expire.
+<p>When called, this function pushes the username into a list of sessions with the current time. If this function is not called with the same username within fifteen minutes, those sessions automatically expire.
 </p>
-  
 </li>
-
 <li>
 <img 
-    src="https://thiercelin-loic.fr/inRoom/sessionsdrop.png" width='170'
+    src="https://thiercelin-loic.fr/inRoom/sessionsdrop.png" width='180'
 >
 <p>
-Take in parameters an username as a <i>'string'</i>, when called, this function stop the session of username given. 
+Take in parameters an username as a <i>'string'</i>. When called, this function drop the session of username given. 
 </p>
 </li>
-
 </ul>

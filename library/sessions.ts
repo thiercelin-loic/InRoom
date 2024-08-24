@@ -1,16 +1,85 @@
+interface user {
+    name: string,
+    location: string,
+    items: string[],
+    time: number,
+    score: number,
+    rated: number,
+    rank: number
+}
+
+const sessions = { get, set, rate, drop }
+
 const second = 1000
 const minute = second * 60
+const interval = minute / 8
+const hundred = 100
+const fifteen = minute * 15
+const delay = current() - fifteen
+const time = current()
+const rank = 0
 
-let users = [{ 
-    user: '', 
-    time: 0, 
+let users = [{
+    name: '',
+    location: '',
+    items: [''],
+    time: 0,
     score: 0,
-    location: '', 
-    items: [''] 
+    rated: 0,
+    rank: 0
 }]
 
-function get() {
-    return users
+let sum = 0
+let frequency = 0
+let rated = 0
+
+let easy = false
+let medium = false
+let hard = false
+
+function get() { return users }
+
+function addition(user: user) {
+    sum += user.score
+}
+
+function percent(update: user) {
+    frequency = update.score / sum
+    rated = frequency * hundred
+    update.rated = rated
+}
+
+function evaluate(update: user) {
+    easy = update.rated < 25
+
+    medium = update.rated > 25
+        && update.rated < 50
+
+    hard = update.rated > 50
+        && update.rated < 75
+
+    if (easy) update.rank = 0
+    else if (medium) update.rank = 1
+    else if (hard) update.rank = 2
+    else update.rank = 3
+}
+
+function filter(user: user) {
+    if (user.name) return user
+}
+
+function stop(update: user) {
+    if (update.time < delay) {
+        console.log(update.name, 'expired')
+        update.name = ''
+    }
+}
+
+function unjoin(update: user, name: string) {
+    if (update.name == name) {
+        console.log(update.name, 'unjoining')
+        update.name = ''
+    }
 }
 
 function short(current: number) {
@@ -28,77 +97,60 @@ function current() {
 }
 
 function clean() {
-    const update = users.filter((sessions) =>
-        sessions.user
-            ? sessions
-            : null
-    )
-
-    console.log('cleaned')
-    users = update
+    const updates = users.filter(filter)
+    console.log('sessions cleaned')
+    users = updates
 }
 
 function overtime() {
-    const update = [...users]
-    const fifteen = minute * 15
-    const delay = current() - fifteen
-
-    update.filter((sessions) => {
-        if (sessions.time < delay) {
-            console.log(sessions.user, 'expired')
-            sessions.user = ''
-        }
-    })
-
-    users = update
+    const updates = [...users]
+    updates.filter(stop)
+    users = updates
 }
 
-function drop(user: string) {
-    const update = [...users]
+function drop(name: string) {
+    const updates = [...users]
+    updates.filter((update) =>
+        unjoin(update, name)
+    )
 
-    update.filter((sessions) => {
-        if (sessions.user == user) {
-            console.log(sessions.user, 'disconnected')
-            sessions.user = ''
-        }
-    })
+    users = updates
+}
 
-    users = update
+function rate() {
+    const updates = [...users]
+
+    users.map(addition)
+    updates.filter(percent)
+    updates.filter(evaluate)
+
+    users = updates
 }
 
 function set(
-    user: string, 
-    score: number, 
-    location: string, 
-    items: string[]
+    name: string,
+    location: string,
+    items: string[],
+    score: number
 ) {
-    const interval = minute / 8
-    const time = current()
-    const push = {
-        user,
+    users.map((user) => {
+        if (user.name == name) 
+            drop(name)
+    })
+
+    users.push({
+        name,
+        location,
+        items,
         time,
         score,
-        location,
-        items
-    }
-
-    console.log(user, 'connected')
-
-    users.map((sessions) =>
-        sessions.user == user
-            ? drop(user)
-            : null
-    )
-
-    users.push(push)
-
-    setInterval(() => {
-        overtime()
-        clean()
-        console.log(users)
-    }, interval)
+        rated,
+        rank
+    })
 }
 
-const sessions = { get, set, drop }
+setInterval(clean, interval)
+setInterval(overtime, interval)
+setInterval(rate, interval)
 
 export default sessions
